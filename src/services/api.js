@@ -37,4 +37,10 @@ fetcher.post = function (url, data) {
           });
   };
 
+  fetcher.delete = function (url) {
+    return fetcher(url, {
+            method: 'DELETE', 
+          });
+  };
+
 export default fetcher;
