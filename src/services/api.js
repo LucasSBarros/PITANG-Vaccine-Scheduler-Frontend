@@ -27,4 +27,14 @@ fetcher.post = function (url, data) {
     });
   };
 
+  fetcher.put = function (url, data) {
+    return fetcher(url, {
+            body: JSON.stringify(data), 
+            method: 'PUT', 
+            headers: {
+              'Content-Type': 'application/json'
+            },
+          });
+  };
+
 export default fetcher;
