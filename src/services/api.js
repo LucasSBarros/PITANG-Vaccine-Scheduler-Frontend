@@ -17,4 +17,14 @@ async function fetcher(url, options) {
   throw error;
 }
 
+fetcher.post = function (url, data) {
+    return fetcher(url, {
+      body: JSON.stringify(data),
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+  };
+
 export default fetcher;
