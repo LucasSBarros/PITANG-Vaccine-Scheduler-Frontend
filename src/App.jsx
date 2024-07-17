@@ -1,7 +1,7 @@
 export default function App() {
   return (
     <div>
-      <h1>Configuração do Vite</h1>
+      <h1>Configuração do Chakra</h1>
     </div>
   );
 } 
