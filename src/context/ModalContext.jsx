@@ -1,4 +1,4 @@
-import { createContext, useContext, useState } from "react";
+import React, { createContext, useContext, useState } from "react";
 import {
   Modal,
   ModalOverlay,
@@ -8,11 +8,12 @@ import {
   ModalBody,
   ModalCloseButton,
   useDisclosure,
+  Button,
 } from "@chakra-ui/react";
 
 const ModalContext = createContext();
 
-export const ModalProvider = ({ children }) => {
+const ModalProvider = ({ children }) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const [modalContent, setModalContent] = useState({});
 
@@ -42,4 +43,6 @@ export const ModalProvider = ({ children }) => {
   );
 };
 
-export const useModal = () => useContext(ModalContext);
+const useModal = () => useContext(ModalContext);
+
+export { ModalProvider, useModal };
