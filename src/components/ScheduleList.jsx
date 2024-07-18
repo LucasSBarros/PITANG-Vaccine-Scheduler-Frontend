@@ -77,40 +77,50 @@ const ScheduleList = () => {
     );
   }
 
-  const handleStatusChange = (id) => {
-    setSchedules((prevSchedules) => {
-      const updatedSchedules = prevSchedules.map((schedule) =>
-        schedule.id === id
-          ? {
-              ...schedule,
-              scheduleStatus:
-                schedule.scheduleStatus === "Não realizado"
-                  ? "Realizado"
-                  : "Não realizado",
-            }
-          : schedule
-      );
-      localStorage.setItem("appointments", JSON.stringify(updatedSchedules));
-      return updatedSchedules;
-    });
+  const handleStatusChange = async (id, newStatus) => {
+    const schedule = schedules.find((schedule) => schedule.id === id);
+    if (!schedule) return;
+
+    try {
+      const updatedSchedule = {
+        ...schedule,
+        scheduleStatus: newStatus,
+      };
+      await fetcher.put(`/api/schedule/${id}`, updatedSchedule);
+
+      setSchedules((prevSchedules) => {
+        const updatedSchedules = prevSchedules.map((schedule) =>
+          schedule.id === id ? updatedSchedule : schedule
+        );
+        localStorage.setItem("appointments", JSON.stringify(updatedSchedules));
+        return updatedSchedules;
+      });
+    } catch (error) {
+      console.error("Erro ao atualizar status:", error);
+    }
   };
 
-  const handleConclusionChange = (id) => {
-    setSchedules((prevSchedules) => {
-      const updatedSchedules = prevSchedules.map((schedule) =>
-        schedule.id === id
-          ? {
-              ...schedule,
-              conclusion:
-                schedule.conclusion === "Concluído"
-                  ? "Não concluído"
-                  : "Concluído",
-            }
-          : schedule
-      );
-      localStorage.setItem("appointments", JSON.stringify(updatedSchedules));
-      return updatedSchedules;
-    });
+  const handleConclusionChange = async (id, newConclusion) => {
+    const schedule = schedules.find((schedule) => schedule.id === id);
+    if (!schedule) return;
+
+    try {
+      const updatedSchedule = {
+        ...schedule,
+        conclusion: newConclusion,
+      };
+      await fetcher.put(`/api/schedule/${id}`, updatedSchedule);
+
+      setSchedules((prevSchedules) => {
+        const updatedSchedules = prevSchedules.map((schedule) =>
+          schedule.id === id ? updatedSchedule : schedule
+        );
+        localStorage.setItem("appointments", JSON.stringify(updatedSchedules));
+        return updatedSchedules;
+      });
+    } catch (error) {
+      console.error("Erro ao atualizar conclusão:", error);
+    }
   };
 
   const formatDateForComparison = (dateString) => {
@@ -124,7 +134,6 @@ const ScheduleList = () => {
       const filterDateFormatted = filterDate
         ? formatDateForComparison(filterDate)
         : "";
-      console.log(`Comparing: ${filterDateFormatted} with ${scheduleDate}`);
       return (
         (!filterDate || filterDateFormatted === scheduleDate) &&
         (!filterTime || filterTime === schedule.scheduleTime)
