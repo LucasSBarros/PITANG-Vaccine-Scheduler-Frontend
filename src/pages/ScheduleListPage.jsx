@@ -9,19 +9,13 @@ import {
   Spinner,
   Alert,
   AlertIcon,
-  Checkbox,
-  Table,
-  Thead,
-  Tbody,
-  Tr,
-  Th,
-  Td,
   Button,
 } from "@chakra-ui/react";
 import fetcher from "../services/api";
 import { useForm } from "react-hook-form";
 import LinkField from "../components/LinkField";
 import Filters from "../components/Filters";
+import ScheduleTable from "../components/ScheduleTable";
 
 const ScheduleListPage = () => {
   const [schedules, setSchedules] = useState([]);
@@ -187,50 +181,12 @@ const ScheduleListPage = () => {
             trigger={trigger}
             filterTime={filterTime}
           />
-          <Table variant="simple">
-            <Thead>
-              <Tr>
-                <Th>Data do Agendamento</Th>
-                <Th>Horário do Agendamento</Th>
-                <Th>Nome Completo</Th>
-                <Th>Data de Nascimento</Th>
-                <Th>Status</Th>
-                <Th>Conclusão</Th>
-              </Tr>
-            </Thead>
-            <Tbody>
-              {currentSchedules.map((schedule) => (
-                <Tr key={schedule.id}>
-                  <Td>{formatDateForDisplay(schedule.scheduleDate)}</Td>
-                  <Td>{schedule.scheduleTime}</Td>
-                  <Td>{schedule.pacientName}</Td>
-                  <Td>
-                    {new Date(schedule.pacientBirthDate).toLocaleDateString(
-                      "pt-BR"
-                    )}
-                  </Td>
-                  <Td>
-                    <Checkbox
-                      isChecked={schedule.scheduleStatus === "Realizado"}
-                      onChange={() => handleStatusChange(schedule.id)}
-                    >
-                      {schedule.scheduleStatus}
-                    </Checkbox>
-                  </Td>
-                  <Td>
-                    <Checkbox
-                      isChecked={schedule.conclusion === "Concluído"}
-                      onChange={() => handleConclusionChange(schedule.id)}
-                    >
-                      {schedule.conclusion === "Concluído"
-                        ? "Concluído. A vacina foi aplicada"
-                        : "Não concluído. A vacina não foi aplicada"}
-                    </Checkbox>
-                  </Td>
-                </Tr>
-              ))}
-            </Tbody>
-          </Table>
+          <ScheduleTable
+            schedules={currentSchedules}
+            handleStatusChange={handleStatusChange}
+            handleConclusionChange={handleConclusionChange}
+            formatDateForDisplay={formatDateForDisplay}
+          />
           <Flex mt={4} justifyContent="space-between">
             <Button
               onClick={handlePreviousPage}
