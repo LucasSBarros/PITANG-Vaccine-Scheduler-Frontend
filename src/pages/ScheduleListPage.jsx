@@ -10,28 +10,31 @@ import {
   Alert,
   AlertIcon,
   Checkbox,
-  Input,
   Table,
   Thead,
   Tbody,
   Tr,
   Th,
   Td,
-  Select,
-  Link as ChakraLink,
   Button,
 } from "@chakra-ui/react";
 import fetcher from "../services/api";
-import { Link } from "react-router-dom";
+import { useForm } from "react-hook-form";
+import DateField from "../components/DateField";
+import TimeField from "../components/TimeField";
+import LinkField from "../components/LinkField";
 
 const ScheduleListPage = () => {
   const [schedules, setSchedules] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-  const [filterDate, setFilterDate] = useState("");
-  const [filterTime, setFilterTime] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
   const [itemsPerPage, setItemsPerPage] = useState(20);
+
+  const { control, setValue, trigger, watch } = useForm();
+
+  const filterDate = watch("filterDate", "");
+  const filterTime = watch("filterTime", "");
 
   const bg = useColorModeValue("gray.50", "gray.800");
   const boxBg = useColorModeValue("white", "gray.700");
@@ -41,7 +44,7 @@ const ScheduleListPage = () => {
       try {
         const response = await fetcher("/api/schedule");
 
-        if (response && response.items && typeof response.items === 'object') {
+        if (response && response.items && typeof response.items === "object") {
           const scheduleArray = Object.values(response.items).flat();
           localStorage.setItem("appointments", JSON.stringify(scheduleArray));
           setSchedules(scheduleArray);
@@ -53,7 +56,9 @@ const ScheduleListPage = () => {
         console.error("Erro ao buscar agendamentos:", err);
         setError(err.message || "Erro ao buscar agendamentos");
 
-        const storedAppointments = JSON.parse(localStorage.getItem("appointments"));
+        const storedAppointments = JSON.parse(
+          localStorage.getItem("appointments")
+        );
         if (storedAppointments) {
           setSchedules(storedAppointments);
         }
@@ -88,7 +93,13 @@ const ScheduleListPage = () => {
     setSchedules((prevSchedules) => {
       const updatedSchedules = prevSchedules.map((schedule) =>
         schedule.id === id
-          ? { ...schedule, scheduleStatus: schedule.scheduleStatus === "Não realizado" ? "Realizado" : "Não realizado" }
+          ? {
+              ...schedule,
+              scheduleStatus:
+                schedule.scheduleStatus === "Não realizado"
+                  ? "Realizado"
+                  : "Não realizado",
+            }
           : schedule
       );
       localStorage.setItem("appointments", JSON.stringify(updatedSchedules));
@@ -99,38 +110,55 @@ const ScheduleListPage = () => {
   const handleConclusionChange = (id) => {
     setSchedules((prevSchedules) => {
       const updatedSchedules = prevSchedules.map((schedule) =>
-        schedule.id === id ? { ...schedule, conclusion: schedule.conclusion === "Concluído" ? "Não concluído" : "Concluído" } : schedule
+        schedule.id === id
+          ? {
+              ...schedule,
+              conclusion:
+                schedule.conclusion === "Concluído"
+                  ? "Não concluído"
+                  : "Concluído",
+            }
+          : schedule
       );
       localStorage.setItem("appointments", JSON.stringify(updatedSchedules));
       return updatedSchedules;
     });
   };
 
-  const handleFilterDateChange = (e) => {
-    setFilterDate(e.target.value);
-  };
-
   const handleFilterTimeChange = (e) => {
-    setFilterTime(e.target.value);
+    setValue("filterTime", e.target.value);
+    trigger("filterTime");
   };
 
   const formatDateForComparison = (dateString) => {
     const date = new Date(dateString);
-    date.setHours(0, 0, 0, 0);
-    return date.toISOString().split('T')[0];
+    return date.toISOString().split("T")[0];
   };
 
-  const filteredSchedules = schedules.filter((schedule) => {
-    const scheduleDate = formatDateForComparison(schedule.scheduleDate);
-    return (
-      (!filterDate || filterDate === scheduleDate) &&
-      (!filterTime || filterTime === schedule.scheduleTime)
+  const filteredSchedules = schedules
+    .filter((schedule) => {
+      const scheduleDate = formatDateForComparison(schedule.scheduleDate);
+      const filterDateFormatted = filterDate
+        ? formatDateForComparison(filterDate)
+        : "";
+      console.log(`Comparing: ${filterDateFormatted} with ${scheduleDate}`);
+      return (
+        (!filterDate || filterDateFormatted === scheduleDate) &&
+        (!filterTime || filterTime === schedule.scheduleTime)
+      );
+    })
+    .sort(
+      (a, b) =>
+        new Date(a.scheduleDate + "T" + a.scheduleTime) -
+        new Date(b.scheduleDate + "T" + b.scheduleTime)
     );
-  }).sort((a, b) => new Date(a.scheduleDate + 'T' + a.scheduleTime) - new Date(b.scheduleDate + 'T' + b.scheduleTime));
 
   const indexOfLastSchedule = currentPage * itemsPerPage;
   const indexOfFirstSchedule = indexOfLastSchedule - itemsPerPage;
-  const currentSchedules = filteredSchedules.slice(indexOfFirstSchedule, indexOfLastSchedule);
+  const currentSchedules = filteredSchedules.slice(
+    indexOfFirstSchedule,
+    indexOfLastSchedule
+  );
 
   const totalPages = Math.ceil(filteredSchedules.length / itemsPerPage);
 
@@ -143,8 +171,8 @@ const ScheduleListPage = () => {
   };
 
   const formatDateForDisplay = (dateString) => {
-    const date = new Date(dateString);
-    return date.toLocaleDateString('pt-BR', { timeZone: 'UTC' });
+    const date = new Date(dateString + "T00:00:00");
+    return date.toLocaleDateString("pt-BR", { timeZone: "UTC" });
   };
 
   return (
@@ -160,29 +188,27 @@ const ScheduleListPage = () => {
         </Stack>
         <Box rounded={"lg"} bg={boxBg} boxShadow={"lg"} p={8} width="100%">
           <Stack direction="row" spacing={4} mb={4}>
-            <Input
-              type="date"
-              value={filterDate}
-              onChange={handleFilterDateChange}
-              placeholder="Filtrar por data"
+            <DateField
+              id="filterDate"
+              label="Filtrar por data"
+              control={control}
+              setValue={setValue}
+              trigger={trigger}
+              errorMessage={null}
             />
-            <Select
-              value={filterTime}
-              onChange={handleFilterTimeChange}
-              placeholder="Filtrar por horário"
-            >
-              <option value="07:00:00">07:00</option>
-              <option value="08:00:00">08:00</option>
-              <option value="09:00:00">09:00</option>
-              <option value="10:00:00">10:00</option>
-              <option value="11:00:00">11:00</option>
-              <option value="12:00:00">12:00</option>
-              <option value="13:00:00">13:00</option>
-              <option value="14:00:00">14:00</option>
-              <option value="15:00:00">15:00</option>
-              <option value="16:00:00">16:00</option>
-              <option value="17:00:00">17:00</option>
-            </Select>
+            <TimeField
+              id="filterTime"
+              label="Filtrar por horário"
+              register={() => ({
+                onChange: handleFilterTimeChange,
+                value: filterTime,
+              })}
+              setValue={(name, value) =>
+                handleFilterTimeChange({ target: { value } })
+              }
+              trigger={() => {}}
+              errorMessage={null}
+            />
           </Stack>
           <Table variant="simple">
             <Thead>
@@ -201,7 +227,11 @@ const ScheduleListPage = () => {
                   <Td>{formatDateForDisplay(schedule.scheduleDate)}</Td>
                   <Td>{schedule.scheduleTime}</Td>
                   <Td>{schedule.pacientName}</Td>
-                  <Td>{new Date(schedule.pacientBirthDate).toLocaleDateString('pt-BR')}</Td>
+                  <Td>
+                    {new Date(schedule.pacientBirthDate).toLocaleDateString(
+                      "pt-BR"
+                    )}
+                  </Td>
                   <Td>
                     <Checkbox
                       isChecked={schedule.scheduleStatus === "Realizado"}
@@ -215,7 +245,9 @@ const ScheduleListPage = () => {
                       isChecked={schedule.conclusion === "Concluído"}
                       onChange={() => handleConclusionChange(schedule.id)}
                     >
-                      {schedule.conclusion === "Concluído" ? "Concluído. A vacina foi aplicada" : "Não concluído. A vacina não foi aplicada"}
+                      {schedule.conclusion === "Concluído"
+                        ? "Concluído. A vacina foi aplicada"
+                        : "Não concluído. A vacina não foi aplicada"}
                     </Checkbox>
                   </Td>
                 </Tr>
@@ -223,27 +255,30 @@ const ScheduleListPage = () => {
             </Tbody>
           </Table>
           <Flex mt={4} justifyContent="space-between">
-            <Button onClick={handlePreviousPage} isDisabled={currentPage === 1} colorScheme='purple'>
+            <Button
+              onClick={handlePreviousPage}
+              isDisabled={currentPage === 1}
+              colorScheme="purple"
+            >
               Anterior
             </Button>
             <Text>
               Página {currentPage} de {totalPages}
             </Text>
-            <Button onClick={handleNextPage} isDisabled={currentPage === totalPages} colorScheme='purple'>
+            <Button
+              onClick={handleNextPage}
+              isDisabled={currentPage === totalPages}
+              colorScheme="purple"
+            >
               Próxima
             </Button>
           </Flex>
         </Box>
-
-        <Stack>
-          <Text align={"center"}>
-            Deseja realizar um novo agendamento?
-            <br />
-            <ChakraLink as={Link} to="/" color={"purple.400"}>
-              Formulário de agendamento
-            </ChakraLink>
-          </Text>
-        </Stack>
+        <LinkField
+          to="/"
+          linkText="Formulário de agendamento"
+          description="Deseja realizar um novo agendamento?"
+        />
       </Stack>
     </Flex>
   );

@@ -17,6 +17,7 @@ const DateField = ({ id, label, control, setValue, trigger, errorMessage }) => {
         name={id}
         render={({ field }) => (
           <DatePicker
+            placeholderText="dd/mm/aaaa"
             selected={field.value}
             onChange={(date) => {
               setValue(id, date);
