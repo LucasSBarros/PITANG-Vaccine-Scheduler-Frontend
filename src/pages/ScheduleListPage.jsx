@@ -18,7 +18,8 @@ import {
   Th,
   Td,
   Select,
-  Link as ChakraLink
+  Link as ChakraLink,
+  Button,
 } from "@chakra-ui/react";
 import fetcher from "../services/api";
 import { Link } from "react-router-dom";
@@ -29,6 +30,8 @@ const ScheduleListPage = () => {
   const [error, setError] = useState(null);
   const [filterDate, setFilterDate] = useState("");
   const [filterTime, setFilterTime] = useState("");
+  const [currentPage, setCurrentPage] = useState(1);
+  const [itemsPerPage, setItemsPerPage] = useState(20);
 
   const bg = useColorModeValue("gray.50", "gray.800");
   const boxBg = useColorModeValue("white", "gray.700");
@@ -42,6 +45,7 @@ const ScheduleListPage = () => {
           const scheduleArray = Object.values(response.items).flat();
           localStorage.setItem("appointments", JSON.stringify(scheduleArray));
           setSchedules(scheduleArray);
+          setItemsPerPage(response.pageSize || 20);
         } else {
           throw new Error("Formato da resposta da API inválido");
         }
@@ -124,6 +128,20 @@ const ScheduleListPage = () => {
     );
   }).sort((a, b) => new Date(a.scheduleDate + 'T' + a.scheduleTime) - new Date(b.scheduleDate + 'T' + b.scheduleTime));
 
+  const indexOfLastSchedule = currentPage * itemsPerPage;
+  const indexOfFirstSchedule = indexOfLastSchedule - itemsPerPage;
+  const currentSchedules = filteredSchedules.slice(indexOfFirstSchedule, indexOfLastSchedule);
+
+  const totalPages = Math.ceil(filteredSchedules.length / itemsPerPage);
+
+  const handlePreviousPage = () => {
+    setCurrentPage((prevPage) => Math.max(prevPage - 1, 1));
+  };
+
+  const handleNextPage = () => {
+    setCurrentPage((prevPage) => Math.min(prevPage + 1, totalPages));
+  };
+
   return (
     <Flex minH={"100vh"} align={"center"} justify={"center"} bg={bg} px={4}>
       <Stack spacing={8} mx={"auto"} width="100%" maxW={"1200px"} py={12}>
@@ -173,7 +191,7 @@ const ScheduleListPage = () => {
               </Tr>
             </Thead>
             <Tbody>
-              {filteredSchedules.map((schedule) => (
+              {currentSchedules.map((schedule) => (
                 <Tr key={schedule.id}>
                   <Td>{new Date(schedule.scheduleDate).toLocaleDateString('pt-BR')}</Td>
                   <Td>{schedule.scheduleTime}</Td>
@@ -199,9 +217,20 @@ const ScheduleListPage = () => {
               ))}
             </Tbody>
           </Table>
+          <Flex mt={4} justifyContent="space-between">
+            <Button onClick={handlePreviousPage} isDisabled={currentPage === 1} colorScheme='purple'>
+              Anterior
+            </Button>
+            <Text>
+              Página {currentPage} de {totalPages}
+            </Text>
+            <Button onClick={handleNextPage} isDisabled={currentPage === totalPages} colorScheme='purple'>
+              Próxima
+            </Button>
+          </Flex>
         </Box>
 
-        <Stack pt={0}>
+        <Stack>
           <Text align={"center"}>
             Deseja realizar um novo agendamento?
             <br />
