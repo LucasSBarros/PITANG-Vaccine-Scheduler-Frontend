@@ -20,9 +20,8 @@ import {
 } from "@chakra-ui/react";
 import fetcher from "../services/api";
 import { useForm } from "react-hook-form";
-import DateField from "../components/DateField";
-import TimeField from "../components/TimeField";
 import LinkField from "../components/LinkField";
+import Filters from "../components/Filters";
 
 const ScheduleListPage = () => {
   const [schedules, setSchedules] = useState([]);
@@ -125,11 +124,6 @@ const ScheduleListPage = () => {
     });
   };
 
-  const handleFilterTimeChange = (e) => {
-    setValue("filterTime", e.target.value);
-    trigger("filterTime");
-  };
-
   const formatDateForComparison = (dateString) => {
     const date = new Date(dateString);
     return date.toISOString().split("T")[0];
@@ -187,29 +181,12 @@ const ScheduleListPage = () => {
           </Text>
         </Stack>
         <Box rounded={"lg"} bg={boxBg} boxShadow={"lg"} p={8} width="100%">
-          <Stack direction="row" spacing={4} mb={4}>
-            <DateField
-              id="filterDate"
-              label="Filtrar por data"
-              control={control}
-              setValue={setValue}
-              trigger={trigger}
-              errorMessage={null}
-            />
-            <TimeField
-              id="filterTime"
-              label="Filtrar por horário"
-              register={() => ({
-                onChange: handleFilterTimeChange,
-                value: filterTime,
-              })}
-              setValue={(name, value) =>
-                handleFilterTimeChange({ target: { value } })
-              }
-              trigger={() => {}}
-              errorMessage={null}
-            />
-          </Stack>
+          <Filters
+            control={control}
+            setValue={setValue}
+            trigger={trigger}
+            filterTime={filterTime}
+          />
           <Table variant="simple">
             <Thead>
               <Tr>
