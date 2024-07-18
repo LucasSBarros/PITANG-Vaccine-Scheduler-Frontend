@@ -3,7 +3,6 @@ import {
   Box,
   FormControl,
   FormLabel,
-  Input,
   Stack,
   Button,
   Heading,
@@ -16,14 +15,14 @@ import {
 } from "@chakra-ui/react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Link } from "react-router-dom";
-import { useForm, Controller } from "react-hook-form";
+import { useForm } from "react-hook-form";
 import fetcher from "../services/api";
 import pacientSchema from "../schemas/pacient.schema";
 import scheduleSchema from "../schemas/schedule.schema";
 import "react-datepicker/dist/react-datepicker.css";
-import DatePicker from "react-datepicker";
 import { useEffect } from "react";
 import FormField from "../components/FormField.jsx";
+import DateField from "../components/DateField.jsx";
 
 const ScheduleFormPage = () => {
   const combinedSchema = pacientSchema.merge(
@@ -124,47 +123,23 @@ const ScheduleFormPage = () => {
               errorMessage={errors.fullName?.message}
             />
 
-            <FormControl id="birthDate" isInvalid={!!errors.birthDate}>
-              <FormLabel>Data de Nascimento</FormLabel>
-              <Controller
-                control={control}
-                name="birthDate"
-                render={({ field }) => (
-                  <DatePicker
-                    selected={field.value}
-                    onChange={(date) => {
-                      setValue("birthDate", date);
-                      trigger("birthDate");
-                    }}
-                    dateFormat="dd/MM/yyyy"
-                    customInput={<Input width={"25em"} />}
-                  />
-                )}
-              />
-              <FormErrorMessage>{errors.birthDate?.message}</FormErrorMessage>
-            </FormControl>
+            <DateField
+              id="birthDate"
+              label="Data de Nascimento"
+              control={control}
+              setValue={setValue}
+              trigger={trigger}
+              errorMessage={errors.birthDate?.message}
+            />
 
-            <FormControl id="scheduleDate" isInvalid={!!errors.scheduleDate}>
-              <FormLabel>Data do Agendamento</FormLabel>
-              <Controller
-                control={control}
-                name="scheduleDate"
-                render={({ field }) => (
-                  <DatePicker
-                    selected={field.value}
-                    onChange={(date) => {
-                      setValue("scheduleDate", date);
-                      trigger("scheduleDate");
-                    }}
-                    dateFormat="dd/MM/yyyy"
-                    customInput={<Input width={"25em"} />}
-                  />
-                )}
-              />
-              <FormErrorMessage>
-                {errors.scheduleDate?.message}
-              </FormErrorMessage>
-            </FormControl>
+            <DateField
+              id="scheduleDate"
+              label="Data do Agendamento"
+              control={control}
+              setValue={setValue}
+              trigger={trigger}
+              errorMessage={errors.scheduleDate?.message}
+            />
 
             <FormControl id="scheduleTime" isInvalid={!!errors.scheduleTime}>
               <FormLabel>Horário do Agendamento</FormLabel>
