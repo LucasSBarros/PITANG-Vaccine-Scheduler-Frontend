@@ -9,13 +9,13 @@ import {
   Spinner,
   Alert,
   AlertIcon,
-  Button,
 } from "@chakra-ui/react";
 import fetcher from "../services/api";
 import { useForm } from "react-hook-form";
 import LinkField from "../components/LinkField";
 import Filters from "../components/Filters";
 import ScheduleTable from "../components/ScheduleTable";
+import PaginationControls from "../components/PaginationControls";
 
 const ScheduleListPage = () => {
   const [schedules, setSchedules] = useState([]);
@@ -187,25 +187,12 @@ const ScheduleListPage = () => {
             handleConclusionChange={handleConclusionChange}
             formatDateForDisplay={formatDateForDisplay}
           />
-          <Flex mt={4} justifyContent="space-between">
-            <Button
-              onClick={handlePreviousPage}
-              isDisabled={currentPage === 1}
-              colorScheme="purple"
-            >
-              Anterior
-            </Button>
-            <Text>
-              Página {currentPage} de {totalPages}
-            </Text>
-            <Button
-              onClick={handleNextPage}
-              isDisabled={currentPage === totalPages}
-              colorScheme="purple"
-            >
-              Próxima
-            </Button>
-          </Flex>
+          <PaginationControls
+            currentPage={currentPage}
+            totalPages={totalPages}
+            handlePreviousPage={handlePreviousPage}
+            handleNextPage={handleNextPage}
+          />
         </Box>
         <LinkField
           to="/"
