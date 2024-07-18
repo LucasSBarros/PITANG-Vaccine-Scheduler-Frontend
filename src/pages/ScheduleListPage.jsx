@@ -142,6 +142,11 @@ const ScheduleListPage = () => {
     setCurrentPage((prevPage) => Math.min(prevPage + 1, totalPages));
   };
 
+  const formatDateForDisplay = (dateString) => {
+    const date = new Date(dateString);
+    return date.toLocaleDateString('pt-BR', { timeZone: 'UTC' });
+  };
+
   return (
     <Flex minH={"100vh"} align={"center"} justify={"center"} bg={bg} px={4}>
       <Stack spacing={8} mx={"auto"} width="100%" maxW={"1200px"} py={12}>
@@ -193,7 +198,7 @@ const ScheduleListPage = () => {
             <Tbody>
               {currentSchedules.map((schedule) => (
                 <Tr key={schedule.id}>
-                  <Td>{new Date(schedule.scheduleDate).toLocaleDateString('pt-BR')}</Td>
+                  <Td>{formatDateForDisplay(schedule.scheduleDate)}</Td>
                   <Td>{schedule.scheduleTime}</Td>
                   <Td>{schedule.pacientName}</Td>
                   <Td>{new Date(schedule.pacientBirthDate).toLocaleDateString('pt-BR')}</Td>

@@ -23,6 +23,7 @@ import scheduleSchema from "../schemas/schedule.schema";
 import "react-datepicker/dist/react-datepicker.css";
 import DatePicker from "react-datepicker";
 import { useEffect } from "react";
+import FormField from "../components/FormField.jsx";
 
 const ScheduleFormPage = () => {
   const combinedSchema = pacientSchema.merge(
@@ -115,11 +116,13 @@ const ScheduleFormPage = () => {
           p={8}
         >
           <Stack as="form" onSubmit={handleSubmit(toSchedule)} spacing={4}>
-            <FormControl id="fullName" isInvalid={!!errors.fullName}>
-              <FormLabel>Nome Completo</FormLabel>
-              <Input type="text" {...register("fullName")} />
-              <FormErrorMessage>{errors.fullName?.message}</FormErrorMessage>
-            </FormControl>
+            <FormField
+              id="fullName"
+              label="Nome Completo"
+              type="text"
+              register={register}
+              errorMessage={errors.fullName?.message}
+            />
 
             <FormControl id="birthDate" isInvalid={!!errors.birthDate}>
               <FormLabel>Data de Nascimento</FormLabel>
