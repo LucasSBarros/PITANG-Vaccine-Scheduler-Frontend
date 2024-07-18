@@ -1,9 +1,12 @@
 import { ChakraProvider } from "@chakra-ui/react";
 import ReactDOM from "react-dom/client";
 import AppRoutes from "./routes.jsx";
+import { ModalProvider } from "./context/ModalContext.jsx";
 
 ReactDOM.createRoot(document.getElementById("root")).render(
   <ChakraProvider>
-    <AppRoutes />
+    <ModalProvider>
+      <AppRoutes />
+    </ModalProvider>
   </ChakraProvider>
 );

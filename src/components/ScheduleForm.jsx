@@ -1,4 +1,4 @@
-import { Stack, Button, useToast } from "@chakra-ui/react";
+import { Stack, Button } from "@chakra-ui/react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import fetcher from "../services/api";
@@ -9,8 +9,10 @@ import FormField from "./FormField";
 import DateField from "./DateField";
 import TimeField from "./TimeField";
 import LinkField from "../components/LinkField";
+import { useModal } from "../context/ModalContext";
 
 const ScheduleForm = () => {
+  const { openModal, closeModal } = useModal();
   const combinedSchema = pacientSchema.merge(
     scheduleSchema.omit({ pacientId: true })
   );
@@ -28,8 +30,6 @@ const ScheduleForm = () => {
     mode: "onBlur",
   });
 
-  const toast = useToast();
-
   const toSchedule = async (form) => {
     try {
       const pacientResponse = await fetcher.post("/api/pacient", {
@@ -45,20 +45,28 @@ const ScheduleForm = () => {
         scheduleTime: form.scheduleTime,
       });
 
-      toast({
-        status: "success",
+      openModal({
         title: "Sucesso",
-        description: "Agendamento realizado com sucesso.",
-        isClosable: true,
+        body: "Agendamento realizado com sucesso.",
+        footer: (
+          <Button colorScheme="purple" onClick={closeModal}>
+            Fechar
+          </Button>
+        ),
       });
 
       localStorage.removeItem("scheduleForm");
     } catch (error) {
-      toast({
-        status: "error",
-        title: "Algo deu errado...",
-        description: error.cause || error.message,
-        isClosable: true,
+      const errorMessage =
+        error.original?.error || error.message || "Erro desconhecido";
+      openModal({
+        title: "Agendamento não realizado!",
+        body: errorMessage,
+        footer: (
+          <Button colorScheme="red" onClick={closeModal}>
+            Fechar
+          </Button>
+        ),
       });
     }
   };
