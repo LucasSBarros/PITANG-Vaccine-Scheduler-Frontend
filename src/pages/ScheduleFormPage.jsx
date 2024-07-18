@@ -92,7 +92,7 @@ const ScheduleFormPage = () => {
         <Box
           rounded={"lg"}
           bg={useColorModeValue("white", "black")}
-          boxShadow={"dark-lg"}
+          boxShadow={"2xl"}
           p={8}
         >
           <Stack as="form" onSubmit={handleSubmit(toSchedule)} spacing={4}>
@@ -112,7 +112,7 @@ const ScheduleFormPage = () => {
                     selected={field.value}
                     onChange={(date) => {
                       setValue("birthDate", date);
-                      trigger("birthDate"); // Dispara a validação manualmente
+                      trigger("birthDate");
                     }}
                     dateFormat="dd/MM/yyyy"
                     customInput={<Input width={"25em"} />}
@@ -132,7 +132,7 @@ const ScheduleFormPage = () => {
                     selected={field.value}
                     onChange={(date) => {
                       setValue("scheduleDate", date);
-                      trigger("scheduleDate"); // Dispara a validação manualmente
+                      trigger("scheduleDate");
                     }}
                     dateFormat="dd/MM/yyyy"
                     customInput={<Input width={"25em"} />}
@@ -151,7 +151,7 @@ const ScheduleFormPage = () => {
                 placeholder="--:--"
                 onChange={(e) => {
                   setValue("scheduleTime", e.target.value);
-                  trigger("scheduleTime"); // Dispara a validação manualmente
+                  trigger("scheduleTime");
                 }}
               >
                 <option value="07:00:00">07:00</option>
@@ -191,7 +191,7 @@ const ScheduleFormPage = () => {
               <Text align={"center"}>
                 Já realizou o seu agendamento?
                 <br />
-                <ChakraLink as={Link} to="/appointments" color={"purple.400"}>
+                <ChakraLink as={Link} to="/schedulelist" color={"purple.400"}>
                   Consultar Lista de Agendamentos
                 </ChakraLink>
               </Text>
