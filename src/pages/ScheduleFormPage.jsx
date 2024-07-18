@@ -22,6 +22,7 @@ import pacientSchema from "../schemas/pacient.schema";
 import scheduleSchema from "../schemas/schedule.schema";
 import "react-datepicker/dist/react-datepicker.css";
 import DatePicker from "react-datepicker";
+import { useEffect } from "react";
 
 const ScheduleFormPage = () => {
   const combinedSchema = pacientSchema.merge(
@@ -34,6 +35,7 @@ const ScheduleFormPage = () => {
     setValue,
     control,
     trigger,
+    watch,
     formState: { errors, isSubmitting, isValid },
   } = useForm({
     resolver: zodResolver(combinedSchema),
@@ -63,6 +65,8 @@ const ScheduleFormPage = () => {
         description: "Agendamento realizado com sucesso.",
         isClosable: true,
       });
+
+      localStorage.removeItem("scheduleForm");
     } catch (error) {
       toast({
         status: "error",
@@ -72,6 +76,21 @@ const ScheduleFormPage = () => {
       });
     }
   };
+
+  const formValues = watch();
+
+  useEffect(() => {
+    const savedForm = JSON.parse(localStorage.getItem("scheduleForm"));
+    if (savedForm) {
+      for (const [key, value] of Object.entries(savedForm)) {
+        setValue(key, value, { shouldValidate: true, shouldDirty: true });
+      }
+    }
+  }, [setValue]);
+
+  useEffect(() => {
+    localStorage.setItem("scheduleForm", JSON.stringify(formValues));
+  }, [formValues]);
 
   return (
     <Flex
