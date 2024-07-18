@@ -18,8 +18,10 @@ import {
   Th,
   Td,
   Select,
+  Link as ChakraLink
 } from "@chakra-ui/react";
 import fetcher from "../services/api";
+import { Link } from "react-router-dom";
 
 const ScheduleListPage = () => {
   const [schedules, setSchedules] = useState([]);
@@ -120,7 +122,7 @@ const ScheduleListPage = () => {
       (!filterDate || filterDate === scheduleDate) &&
       (!filterTime || filterTime === schedule.scheduleTime)
     );
-  });
+  }).sort((a, b) => new Date(a.scheduleDate + 'T' + a.scheduleTime) - new Date(b.scheduleDate + 'T' + b.scheduleTime));
 
   return (
     <Flex minH={"100vh"} align={"center"} justify={"center"} bg={bg} px={4}>
@@ -130,7 +132,7 @@ const ScheduleListPage = () => {
             Lista de Agendamentos
           </Heading>
           <Text fontSize={"larger"} color={"gray.600"} textAlign={"center"}>
-            Aqui estão os agendamentos realizados.
+            Confira aqui o seu agendamento.
           </Text>
         </Stack>
         <Box rounded={"lg"} bg={boxBg} boxShadow={"lg"} p={8} width="100%">
@@ -196,7 +198,18 @@ const ScheduleListPage = () => {
               ))}
             </Tbody>
           </Table>
+          
         </Box>
+
+        <Stack pt={0}>
+              <Text align={"center"}>
+                Deseja realizar um novo agendamento?
+                <br />
+                <ChakraLink as={Link} to="/" color={"purple.400"}>
+                  Formulário de agendamento
+                </ChakraLink>
+              </Text>
+            </Stack>
       </Stack>
     </Flex>
   );
