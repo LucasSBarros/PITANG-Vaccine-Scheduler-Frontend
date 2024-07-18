@@ -92,10 +92,10 @@ const ScheduleListPage = () => {
     });
   };
 
-  const handleConclusionChange = (id, value) => {
+  const handleConclusionChange = (id) => {
     setSchedules((prevSchedules) => {
       const updatedSchedules = prevSchedules.map((schedule) =>
-        schedule.id === id ? { ...schedule, conclusion: value } : schedule
+        schedule.id === id ? { ...schedule, conclusion: schedule.conclusion === "Concluído" ? "Não concluído" : "Concluído" } : schedule
       );
       localStorage.setItem("appointments", JSON.stringify(updatedSchedules));
       return updatedSchedules;
@@ -188,28 +188,28 @@ const ScheduleListPage = () => {
                     </Checkbox>
                   </Td>
                   <Td>
-                    <Input
-                      value={schedule.conclusion || ""}
-                      onChange={(e) => handleConclusionChange(schedule.id, e.target.value)}
-                      placeholder="Conclusão do atendimento"
-                    />
+                    <Checkbox
+                      isChecked={schedule.conclusion === "Concluído"}
+                      onChange={() => handleConclusionChange(schedule.id)}
+                    >
+                      {schedule.conclusion === "Concluído" ? "Concluído. A vacina foi aplicada" : "Não concluído. A vacina não foi aplicada"}
+                    </Checkbox>
                   </Td>
                 </Tr>
               ))}
             </Tbody>
           </Table>
-          
         </Box>
 
         <Stack pt={0}>
-              <Text align={"center"}>
-                Deseja realizar um novo agendamento?
-                <br />
-                <ChakraLink as={Link} to="/" color={"purple.400"}>
-                  Formulário de agendamento
-                </ChakraLink>
-              </Text>
-            </Stack>
+          <Text align={"center"}>
+            Deseja realizar um novo agendamento?
+            <br />
+            <ChakraLink as={Link} to="/" color={"purple.400"}>
+              Formulário de agendamento
+            </ChakraLink>
+          </Text>
+        </Stack>
       </Stack>
     </Flex>
   );
