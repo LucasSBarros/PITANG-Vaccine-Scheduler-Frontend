@@ -2,8 +2,6 @@ import { useEffect, useState } from "react";
 import {
   Flex,
   Box,
-  Heading,
-  Text,
   Stack,
   useColorModeValue,
   Spinner,
@@ -16,6 +14,7 @@ import LinkField from "../components/LinkField";
 import Filters from "../components/Filters";
 import ScheduleTable from "../components/ScheduleTable";
 import PaginationControls from "../components/PaginationControls";
+import Header from "../components/Header";
 
 const ScheduleListPage = () => {
   const [schedules, setSchedules] = useState([]);
@@ -166,14 +165,10 @@ const ScheduleListPage = () => {
   return (
     <Flex minH={"100vh"} align={"center"} justify={"center"} bg={bg} px={4}>
       <Stack spacing={8} mx={"auto"} width="100%" maxW={"1200px"} py={12}>
-        <Stack align={"center"}>
-          <Heading fontSize={"xxx-large"} textAlign={"center"}>
-            Lista de Agendamentos
-          </Heading>
-          <Text fontSize={"larger"} color={"gray.600"} textAlign={"center"}>
-            Confira aqui o seu agendamento.
-          </Text>
-        </Stack>
+        <Header
+          title="Lista de Agendamentos"
+          subtitle="Confira aqui o seu agendamento."
+        />
         <Box rounded={"lg"} bg={boxBg} boxShadow={"lg"} p={8} width="100%">
           <Filters
             control={control}
