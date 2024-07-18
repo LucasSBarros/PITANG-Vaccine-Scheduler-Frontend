@@ -1,8 +1,6 @@
 import {
   Flex,
   Box,
-  FormControl,
-  FormLabel,
   Stack,
   Button,
   Heading,
@@ -10,8 +8,6 @@ import {
   Link as ChakraLink,
   useColorModeValue,
   useToast,
-  Select,
-  FormErrorMessage,
 } from "@chakra-ui/react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Link } from "react-router-dom";
@@ -23,6 +19,7 @@ import "react-datepicker/dist/react-datepicker.css";
 import { useEffect } from "react";
 import FormField from "../components/FormField.jsx";
 import DateField from "../components/DateField.jsx";
+import TimeField from "../components/TimeField.jsx";
 
 const ScheduleFormPage = () => {
   const combinedSchema = pacientSchema.merge(
@@ -141,32 +138,14 @@ const ScheduleFormPage = () => {
               errorMessage={errors.scheduleDate?.message}
             />
 
-            <FormControl id="scheduleTime" isInvalid={!!errors.scheduleTime}>
-              <FormLabel>Horário do Agendamento</FormLabel>
-              <Select
-                {...register("scheduleTime")}
-                placeholder="--:--"
-                onChange={(e) => {
-                  setValue("scheduleTime", e.target.value);
-                  trigger("scheduleTime");
-                }}
-              >
-                <option value="07:00:00">07:00</option>
-                <option value="08:00:00">08:00</option>
-                <option value="09:00:00">09:00</option>
-                <option value="10:00:00">10:00</option>
-                <option value="11:00:00">11:00</option>
-                <option value="12:00:00">12:00</option>
-                <option value="13:00:00">13:00</option>
-                <option value="14:00:00">14:00</option>
-                <option value="15:00:00">15:00</option>
-                <option value="16:00:00">16:00</option>
-                <option value="17:00:00">17:00</option>
-              </Select>
-              <FormErrorMessage>
-                {errors.scheduleTime?.message}
-              </FormErrorMessage>
-            </FormControl>
+            <TimeField
+              id="scheduleTime"
+              label="Horário do Agendamento"
+              register={register}
+              setValue={setValue}
+              trigger={trigger}
+              errorMessage={errors.scheduleTime?.message}
+            />
 
             <Stack spacing={10} pt={2}>
               <Button
