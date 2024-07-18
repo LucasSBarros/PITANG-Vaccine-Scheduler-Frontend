@@ -1,6 +1,18 @@
-import { FormControl, FormLabel, Select, FormErrorMessage } from "@chakra-ui/react";
+import {
+  FormControl,
+  FormLabel,
+  Select,
+  FormErrorMessage,
+} from "@chakra-ui/react";
 
-const TimeField = ({ id, label, register, setValue, trigger, errorMessage }) => {
+const TimeField = ({
+  id,
+  label,
+  register,
+  setValue,
+  trigger,
+  errorMessage,
+}) => {
   return (
     <FormControl id={id} isInvalid={!!errorMessage}>
       <FormLabel>{label}</FormLabel>
