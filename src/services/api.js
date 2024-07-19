@@ -3,6 +3,12 @@ import env from "../utils/env";
 async function fetcher(url, options) {
   try {
     const response = await fetch(`${env.VITE_BACKEND_URL}${url}`, options);
+
+    // Não tentar parsear um JSON vazio para requisições DELETE
+    if (options?.method === "DELETE" && response.ok) {
+      return {};
+    }
+
     const data = await response.json();
 
     if (response.ok) {

@@ -1,3 +1,4 @@
+import React from "react";
 import {
   Table,
   Thead,
@@ -7,6 +8,7 @@ import {
   Td,
   Checkbox,
   Button,
+  Flex,
 } from "@chakra-ui/react";
 import { useModal } from "../context/ModalContext";
 
@@ -14,6 +16,7 @@ const ScheduleTable = ({
   schedules,
   handleStatusChange,
   handleConclusionChange,
+  handleDelete,
   formatDateForDisplay,
 }) => {
   const { openModal, closeModal } = useModal();
@@ -63,7 +66,7 @@ const ScheduleTable = ({
           <Th>Data de Nascimento</Th>
           <Th>Status</Th>
           <Th>Conclusão</Th>
-          <Th>Resumo do atendimento</Th>
+          <Th>Ações</Th>
         </Tr>
       </Thead>
       <Tbody>
@@ -112,12 +115,21 @@ const ScheduleTable = ({
               </Checkbox>
             </Td>
             <Td>
-              <Button
-                colorScheme="purple"
-                onClick={() => handleShowSummary(schedule)}
-              >
-                Ver Resumo
-              </Button>
+              <Flex>
+                <Button
+                  colorScheme="purple"
+                  onClick={() => handleShowSummary(schedule)}
+                >
+                  Ver Resumo
+                </Button>
+                <Button
+                  colorScheme="red"
+                  ml={2}
+                  onClick={() => handleDelete(schedule.id)}
+                >
+                  Deletar
+                </Button>
+              </Flex>
             </Td>
           </Tr>
         ))}

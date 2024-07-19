@@ -123,6 +123,22 @@ const ScheduleList = () => {
     }
   };
 
+  const handleDelete = async (id) => {
+    try {
+      await fetcher.delete(`/api/schedule/${id}`);
+
+      setSchedules((prevSchedules) => {
+        const updatedSchedules = prevSchedules.filter(
+          (schedule) => schedule.id !== id
+        );
+        localStorage.setItem("appointments", JSON.stringify(updatedSchedules));
+        return updatedSchedules;
+      });
+    } catch (error) {
+      console.error("Erro ao deletar agendamento:", error);
+    }
+  };
+
   const formatDateForComparison = (dateString) => {
     const date = new Date(dateString);
     return date.toISOString().split("T")[0];
@@ -134,6 +150,7 @@ const ScheduleList = () => {
       const filterDateFormatted = filterDate
         ? formatDateForComparison(filterDate)
         : "";
+      console.log(`Comparing: ${filterDateFormatted} with ${scheduleDate}`);
       return (
         (!filterDate || filterDateFormatted === scheduleDate) &&
         (!filterTime || filterTime === schedule.scheduleTime)
@@ -179,6 +196,7 @@ const ScheduleList = () => {
         schedules={currentSchedules}
         handleStatusChange={handleStatusChange}
         handleConclusionChange={handleConclusionChange}
+        handleDelete={handleDelete}
         formatDateForDisplay={formatDateForDisplay}
       />
       <PaginationControls
