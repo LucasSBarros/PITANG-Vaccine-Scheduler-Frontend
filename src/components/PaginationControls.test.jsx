@@ -1,13 +1,13 @@
-import { render, screen, fireEvent } from '@testing-library/react';
-import '@testing-library/jest-dom';
+import { render, screen, fireEvent } from "@testing-library/react";
+import "@testing-library/jest-dom";
 import { ChakraProvider } from "@chakra-ui/react";
-import PaginationControls from './PaginationControls';
+import PaginationControls from "./PaginationControls";
 
 const renderWithChakraProvider = (ui) => {
   return render(<ChakraProvider>{ui}</ChakraProvider>);
 };
 
-it('renderiza PaginationControls com botões e texto', () => {
+it("renderiza PaginationControls com botões e texto", () => {
   renderWithChakraProvider(
     <PaginationControls
       currentPage={1}
@@ -17,9 +17,9 @@ it('renderiza PaginationControls com botões e texto', () => {
     />
   );
 
-  expect(screen.getByText('Anterior')).toBeInTheDocument();
-  expect(screen.getByText('Página 1 de 10')).toBeInTheDocument();
-  expect(screen.getByText('Próxima')).toBeInTheDocument();
+  expect(screen.getByText("Anterior")).toBeInTheDocument();
+  expect(screen.getByText("Página 1 de 10")).toBeInTheDocument();
+  expect(screen.getByText("Próxima")).toBeInTheDocument();
 });
 
 it('desativa o botão "Anterior" na primeira página', () => {
@@ -32,7 +32,7 @@ it('desativa o botão "Anterior" na primeira página', () => {
     />
   );
 
-  expect(screen.getByText('Anterior')).toBeDisabled();
+  expect(screen.getByText("Anterior")).toBeDisabled();
 });
 
 it('desativa o botão "Próxima" na última página', () => {
@@ -45,10 +45,10 @@ it('desativa o botão "Próxima" na última página', () => {
     />
   );
 
-  expect(screen.getByText('Próxima')).toBeDisabled();
+  expect(screen.getByText("Próxima")).toBeDisabled();
 });
 
-it('habilita ambos os botões em páginas intermediárias', () => {
+it("habilita ambos os botões em páginas intermediárias", () => {
   renderWithChakraProvider(
     <PaginationControls
       currentPage={5}
@@ -58,8 +58,8 @@ it('habilita ambos os botões em páginas intermediárias', () => {
     />
   );
 
-  expect(screen.getByText('Anterior')).not.toBeDisabled();
-  expect(screen.getByText('Próxima')).not.toBeDisabled();
+  expect(screen.getByText("Anterior")).not.toBeDisabled();
+  expect(screen.getByText("Próxima")).not.toBeDisabled();
 });
 
 it('chama handlePreviousPage ao clicar no botão "Anterior"', () => {
@@ -73,7 +73,7 @@ it('chama handlePreviousPage ao clicar no botão "Anterior"', () => {
     />
   );
 
-  fireEvent.click(screen.getByText('Anterior'));
+  fireEvent.click(screen.getByText("Anterior"));
   expect(handlePreviousPage).toHaveBeenCalled();
 });
 
@@ -88,6 +88,6 @@ it('chama handleNextPage ao clicar no botão "Próxima"', () => {
     />
   );
 
-  fireEvent.click(screen.getByText('Próxima'));
+  fireEvent.click(screen.getByText("Próxima"));
   expect(handleNextPage).toHaveBeenCalled();
 });
