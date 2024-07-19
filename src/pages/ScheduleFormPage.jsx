@@ -9,6 +9,7 @@ const ScheduleFormPage = () => {
       align={"center"}
       justify={"center"}
       bg={useColorModeValue("white", "black")}
+      role="main" 
     >
       <Stack spacing={8} mx={"auto"} maxW={"lg"} py={12} px={6}>
         <Header
@@ -20,6 +21,7 @@ const ScheduleFormPage = () => {
           bg={useColorModeValue("white", "black")}
           boxShadow={"2xl"}
           p={8}
+          role="article"
         >
           <ScheduleForm />
         </Box>

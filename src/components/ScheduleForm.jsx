@@ -58,7 +58,7 @@ const ScheduleForm = () => {
       localStorage.removeItem("scheduleForm");
     } catch (error) {
       const errorMessage =
-        error.original?.error || error.message || "Erro desconhecido";
+        error.original?.error || error.message;
       openModal({
         title: "Algo deu errado, agendamento não realizado!",
         body: errorMessage,

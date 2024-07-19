@@ -76,10 +76,10 @@ describe("ScheduleForm", () => {
     });
 
     fireEvent.click(screen.getByText(/Agendar/i));
-    console.log("Clicked submit button");
+    
 
     await waitFor(() => {
-      console.log("fetcher.post calls", fetcher.post.mock.calls);
+      
       expect(fetcher.post).toHaveBeenCalledTimes(2);
     });
 
@@ -120,10 +120,10 @@ describe("ScheduleForm", () => {
     });
 
     fireEvent.click(screen.getByText(/Agendar/i));
-    console.log("Clicked submit button");
+    
 
     await waitFor(() => {
-      console.log("fetcher.post calls", fetcher.post.mock.calls);
+      
       expect(fetcher.post).toHaveBeenCalledTimes(2);
     });
 

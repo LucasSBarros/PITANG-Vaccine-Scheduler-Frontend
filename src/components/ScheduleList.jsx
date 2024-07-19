@@ -31,9 +31,11 @@ const ScheduleList = () => {
     const fetchSchedules = async () => {
       try {
         const response = await fetcher("/api/schedule");
-
+        console.log("API Response:", response);
+  
         if (response && response.items && typeof response.items === "object") {
           const scheduleArray = Object.values(response.items).flat();
+          console.log("Schedules fetched:", scheduleArray);
           localStorage.setItem("appointments", JSON.stringify(scheduleArray));
           setSchedules(scheduleArray);
           setItemsPerPage(response.pageSize || 20);
@@ -43,25 +45,26 @@ const ScheduleList = () => {
       } catch (err) {
         console.error("Erro ao buscar agendamentos:", err);
         setError(err.message || "Erro ao buscar agendamentos");
-
+  
         const storedAppointments = JSON.parse(
           localStorage.getItem("appointments")
         );
         if (storedAppointments) {
+          console.log("Using stored appointments:", storedAppointments);
           setSchedules(storedAppointments);
         }
       } finally {
         setLoading(false);
       }
     };
-
+  
     fetchSchedules();
   }, []);
 
   if (loading) {
     return (
       <Flex minH={"100vh"} align={"center"} justify={"center"}>
-        <Spinner size="xl" />
+        <Spinner size="xl"/>
       </Flex>
     );
   }

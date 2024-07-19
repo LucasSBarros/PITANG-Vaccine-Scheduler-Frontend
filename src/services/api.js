@@ -27,6 +27,15 @@ async function fetcher(url, options) {
   }
 }
 
+fetcher.get = function (url) {
+  return fetcher(url, {
+    method: "GET",
+    headers: {
+      "Content-Type": "application/json",
+    },
+  });
+};
+
 fetcher.post = function (url, data) {
   return fetcher(url, {
     body: JSON.stringify(data),
@@ -50,6 +59,9 @@ fetcher.put = function (url, data) {
 fetcher.delete = function (url) {
   return fetcher(url, {
     method: "DELETE",
+    headers: {
+      "Content-Type": "application/json",
+    },
   });
 };
 

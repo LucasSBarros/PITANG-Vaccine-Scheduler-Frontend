@@ -9,7 +9,7 @@ const renderWithChakraProvider = (ui) => {
 
 jest.mock("react-hook-form", () => ({
   ...jest.requireActual("react-hook-form"),
-  Controller: ({ render, ...props }) => render({ field: {} }),
+  Controller: ({ render }) => render({ field: {} }),
   useForm: () => ({
     control: {},
     setValue: jest.fn(),
@@ -36,7 +36,7 @@ it("chama setValue e trigger na alteração da data", () => {
   const setValue = jest.fn();
   const trigger = jest.fn();
 
-  const { getByLabelText, container } = renderWithChakraProvider(
+  const { container } = renderWithChakraProvider(
     <Filters control={{}} setValue={setValue} trigger={trigger} filterTime="" />
   );
 

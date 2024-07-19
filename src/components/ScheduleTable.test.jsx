@@ -15,7 +15,7 @@ const renderWithChakraProvider = (ui) => {
 const schedules = [
   {
     id: 1,
-    scheduleDate: "2023-07-21",
+    scheduleDate: "2025-07-21",
     scheduleTime: "09:00:00",
     pacientName: "Fulano da Silva",
     pacientBirthDate: "1990-05-15",
@@ -24,7 +24,7 @@ const schedules = [
   },
   {
     id: 2,
-    scheduleDate: "2023-07-22",
+    scheduleDate: "2025-07-22",
     scheduleTime: "10:00:00",
     pacientName: "Cicrano de Tal",
     pacientBirthDate: "1985-08-30",
@@ -71,8 +71,8 @@ describe("ScheduleTable", () => {
 
     expect(screen.getByText("Fulano da Silva")).toBeInTheDocument();
     expect(screen.getByText("Cicrano de Tal")).toBeInTheDocument();
-    expect(screen.getByText("21/07/2023")).toBeInTheDocument();
-    expect(screen.getByText("22/07/2023")).toBeInTheDocument();
+    expect(screen.getByText("21/07/2025")).toBeInTheDocument();
+    expect(screen.getByText("22/07/2025")).toBeInTheDocument();
   });
 
   it("chama handleStatusChange quando o status é alterado para 'Não realizado'", () => {
