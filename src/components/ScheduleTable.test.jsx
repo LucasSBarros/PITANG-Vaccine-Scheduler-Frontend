@@ -17,7 +17,7 @@ const schedules = [
     id: 1,
     scheduleDate: "2023-07-21",
     scheduleTime: "09:00:00",
-    pacientName: "John Doe",
+    pacientName: "Fulano da Silva",
     pacientBirthDate: "1990-05-15",
     scheduleStatus: "Realizado",
     conclusion: "Concluído. A vacina foi aplicada",
@@ -26,7 +26,7 @@ const schedules = [
     id: 2,
     scheduleDate: "2023-07-22",
     scheduleTime: "10:00:00",
-    pacientName: "Jane Smith",
+    pacientName: "Cicrano de Tal",
     pacientBirthDate: "1985-08-30",
     scheduleStatus: "Não realizado",
     conclusion: "Não concluído. A vacina não foi aplicada",
@@ -69,8 +69,8 @@ describe("ScheduleTable", () => {
       />
     );
 
-    expect(screen.getByText("John Doe")).toBeInTheDocument();
-    expect(screen.getByText("Jane Smith")).toBeInTheDocument();
+    expect(screen.getByText("Fulano da Silva")).toBeInTheDocument();
+    expect(screen.getByText("Cicrano de Tal")).toBeInTheDocument();
     expect(screen.getByText("21/07/2023")).toBeInTheDocument();
     expect(screen.getByText("22/07/2023")).toBeInTheDocument();
   });
