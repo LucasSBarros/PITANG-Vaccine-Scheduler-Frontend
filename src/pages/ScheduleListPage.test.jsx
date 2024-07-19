@@ -12,7 +12,7 @@ jest.mock('../services/api', () => ({
   delete: jest.fn(),
 }));
 
-jest.mock('../components/ScheduleList', () => jest.fn(() => <div>Mocked ScheduleList</div>));
+jest.mock('../components/ScheduleList/ScheduleList', () => jest.fn(() => <div>Mocked ScheduleList</div>));
 
 const renderWithProviders = (ui) => {
   return render(

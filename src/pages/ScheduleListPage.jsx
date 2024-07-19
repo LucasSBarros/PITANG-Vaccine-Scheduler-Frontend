@@ -1,7 +1,7 @@
 import { Flex, Stack, useColorModeValue } from "@chakra-ui/react";
-import Header from "../components/Header";
-import LinkField from "../components/LinkField";
-import ScheduleList from "../components/ScheduleList";
+import Header from "../components/Header/Header";
+import LinkField from "../components/LinkField/LinkField";
+import ScheduleList from "../components/ScheduleList/ScheduleList";
 
 const ScheduleListPage = () => {
   const bg = useColorModeValue("gray.50", "gray.800");

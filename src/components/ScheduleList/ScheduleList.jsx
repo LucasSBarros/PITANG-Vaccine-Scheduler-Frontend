@@ -7,11 +7,11 @@ import {
   Alert,
   AlertIcon,
 } from "@chakra-ui/react";
-import fetcher from "../services/api";
+import fetcher from "../../services/api";
 import { useForm } from "react-hook-form";
-import Filters from "../components/Filters";
-import ScheduleTable from "../components/ScheduleTable";
-import PaginationControls from "../components/PaginationControls";
+import Filters from "../Filters/Filters";
+import ScheduleTable from "../ScheduleTable/ScheduleTable";
+import PaginationControls from "../PaginationControls/PaginationControls";
 
 const ScheduleList = () => {
   const [schedules, setSchedules] = useState([]);

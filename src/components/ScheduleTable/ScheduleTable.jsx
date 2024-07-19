@@ -9,7 +9,7 @@ import {
   Button,
   Flex,
 } from "@chakra-ui/react";
-import { useModal } from "../context/ModalContext";
+import { useModal } from "../../context/ModalContext";
 
 const ScheduleTable = ({
   schedules,

@@ -1,6 +1,6 @@
 import { Flex, Box, Stack, useColorModeValue } from "@chakra-ui/react";
-import ScheduleForm from "../components/ScheduleForm";
-import Header from "../components/Header";
+import ScheduleForm from "../components/ScheduleForm/ScheduleForm";
+import Header from "../components/Header/Header";
 
 const ScheduleFormPage = () => {
   return (

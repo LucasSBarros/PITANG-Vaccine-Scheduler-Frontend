@@ -1,6 +1,6 @@
 import { Stack } from "@chakra-ui/react";
-import DateField from "./DateField";
-import TimeField from "./TimeField";
+import DateField from "../DateField/DateField";
+import TimeField from "../TimeField/TimeField";
 
 const Filters = ({ control, setValue, trigger, filterTime }) => {
   const handleFilterTimeChange = (e) => {

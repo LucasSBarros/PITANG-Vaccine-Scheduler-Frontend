@@ -2,9 +2,9 @@ import { render, screen, fireEvent } from "@testing-library/react";
 import "@testing-library/jest-dom";
 import { ChakraProvider } from "@chakra-ui/react";
 import ScheduleTable from "./ScheduleTable";
-import { useModal } from "../context/ModalContext";
+import { useModal } from "../../context/ModalContext";
 
-jest.mock("../context/ModalContext", () => ({
+jest.mock("../../context/ModalContext", () => ({
   useModal: jest.fn(),
 }));
 

@@ -3,14 +3,14 @@ import "@testing-library/jest-dom";
 import { ChakraProvider, Button } from "@chakra-ui/react";
 import { MemoryRouter } from "react-router-dom";
 import ScheduleForm from "./ScheduleForm";
-import { useModal } from "../context/ModalContext";
-import fetcher from "../services/api";
+import { useModal } from "../../context/ModalContext";
+import fetcher from "../../services/api";
 
-jest.mock("../context/ModalContext", () => ({
+jest.mock("../../context/ModalContext", () => ({
   useModal: jest.fn(),
 }));
 
-jest.mock("../services/api", () => ({
+jest.mock("../../services/api", () => ({
   post: jest.fn(),
 }));
 

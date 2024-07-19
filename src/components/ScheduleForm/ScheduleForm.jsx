@@ -1,15 +1,15 @@
 import { Stack, Button } from "@chakra-ui/react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
-import fetcher from "../services/api";
-import pacientSchema from "../schemas/pacient.schema";
-import scheduleSchema from "../schemas/schedule.schema";
+import fetcher from "../../services/api";
+import pacientSchema from "../../schemas/pacient.schema";
+import scheduleSchema from "../../schemas/schedule.schema";
 import { useEffect } from "react";
-import FormField from "./FormField";
-import DateField from "./DateField";
-import TimeField from "./TimeField";
-import LinkField from "../components/LinkField";
-import { useModal } from "../context/ModalContext";
+import FormField from "../FormField/FormField";
+import DateField from "../DateField/DateField";
+import TimeField from "../TimeField/TimeField";
+import LinkField from "../LinkField/LinkField";
+import { useModal } from "../../context/ModalContext";
 
 const ScheduleForm = () => {
   const { openModal, closeModal } = useModal();
